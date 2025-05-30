@@ -1,26 +1,27 @@
-package test.interview.demo.service
-
-import spock.lang.Specification
 import test.interview.demo.domain.Invoice
-import test.interview.demo.repository.InvoiceRepo
+import test.interview.demo.domain.User
 import test.interview.demo.service.InvoiceService
 
-class InvoiceServiceSpec extends Specification {
-
-    InvoiceRepo invoiceRepo = Mock()
+def "getInvoiceById() - happy path"() {
+    given:
+    def invoiceRepo = Mock(InvoiceRepo)
     def invoiceService = new InvoiceService(invoiceRepo)
 
-    def 'getInvoice() happy path'() {
-        given:
-        def id = UUID.fromString("11111111-1111-1111-1111-111111111111")
-        def invoice = Invoice.builder().id(id).build()
+    def invoice = new Invoice()
+    invoice.setId(1)
+    invoice.setAmount(100.0)
 
-        when:
-        def result = invoiceService.getInvoice(id)
+    def user = new User()
+    user.setEmail("user@example.com")
+    user.setCustomerNumber(1)
+    invoice.setUser(user)
 
-        then:
-        result == invoice
-        1 * invoiceRepo.getById(id) >> invoice
-        0 * _
-    }
+    invoiceRepo.findById(1) >> Optional.of(invoice)
+
+    when:
+    def result = invoiceService.getInvoiceById(1)
+
+    then:
+    result.getId() == 1
+    result.getUser().getEmail() == "user@example.com"
 }
