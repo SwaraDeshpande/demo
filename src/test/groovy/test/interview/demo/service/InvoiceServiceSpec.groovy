@@ -1,24 +1,27 @@
-package test.interview.demo.service
-
-import spock.lang.Specification
 import test.interview.demo.domain.Invoice
-import test.interview.demo.repository.FakeDB
+import test.interview.demo.domain.User
 import test.interview.demo.service.InvoiceService
 
-class InvoiceServiceSpec extends Specification {
+def "getInvoiceById() - happy path"() {
+    given:
+    def invoiceRepo = Mock(InvoiceRepo)
+    def invoiceService = new InvoiceService(invoiceRepo)
 
-    def invoiceService = new InvoiceService(null) // InvoiceRepo not used
+    def invoice = new Invoice()
+    invoice.setId(1)
+    invoice.setAmount(100.0)
 
-    def 'getInvoiceById() happy path using FakeDB'() {
-        given:
-        def id = UUID.fromString("11111111-1111-1111-1111-111111111111")
-        def invoice = Invoice.builder().id(id).billingRecords([]).build()
-        FakeDB.idToInvoiceMap.put(id, invoice)
+    def user = new User()
+    user.setEmail("user@example.com")
+    user.setCustomerNumber(1)
+    invoice.setUser(user)
 
-        when:
-        def result = invoiceService.getInvoiceById(id)
+    invoiceRepo.findById(1) >> Optional.of(invoice)
 
-        then:
-        result == invoice
-    }
+    when:
+    def result = invoiceService.getInvoiceById(1)
+
+    then:
+    result.getId() == 1
+    result.getUser().getEmail() == "user@example.com"
 }

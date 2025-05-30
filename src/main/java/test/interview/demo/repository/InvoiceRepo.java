@@ -1,14 +1,14 @@
 package test.interview.demo.repository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import test.interview.demo.domain.Invoice;
+import test.interview.demo.repository.FakeDB;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-@Service  // not using @Repository because it isn't a real repository
-@RequiredArgsConstructor
+@Service
 public class InvoiceRepo {
 
     public Invoice getById(UUID id) {
@@ -16,7 +16,6 @@ public class InvoiceRepo {
     }
 
     public Collection<Invoice> getAll() {
-        return FakeDB.idToInvoiceMap.values();
+        return new ArrayList<>(FakeDB.idToInvoiceMap.values());
     }
-
 }

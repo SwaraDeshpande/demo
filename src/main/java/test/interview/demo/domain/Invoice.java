@@ -1,6 +1,8 @@
 package test.interview.demo.domain;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import test.interview.demo.constants.InvoiceStatus;
 
 import lombok.Data;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 @Data
 @Builder
+@Getter
+@Setter
 public class Invoice implements Core {
 
     private List<BillingRecord> billingRecords;
