@@ -1,6 +1,7 @@
 package test.interview.demo.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import test.interview.demo.domain.BillingRecord;
 import test.interview.demo.exception.ResourceNotFoundException;
 import test.interview.demo.domain.Invoice;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class InvoiceService {
+
+    private final InvoiceRepo invoiceRepo;
 
     public Invoice getInvoiceById(UUID id) {
         Invoice invoice = FakeDB.idToInvoiceMap.get(id);
