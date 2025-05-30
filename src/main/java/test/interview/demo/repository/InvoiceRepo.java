@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import test.interview.demo.domain.Invoice;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @Service  // not using @Repository because it isn't a real repository
@@ -14,5 +15,8 @@ public class InvoiceRepo {
         return FakeDB.idToInvoiceMap.get(id);
     }
 
+    public Collection<Invoice> getAll() {
+        return FakeDB.idToInvoiceMap.values();
+    }
 
 }
