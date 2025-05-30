@@ -21,21 +21,21 @@ public class InvoiceService {
 
     private final InvoiceRepo invoiceRepo;
 
-    public Invoice getInvoiceById(UUID id) {
-        Invoice invoice = invoiceRepo.getById(id);
-        if (invoice == null) {
-            throw new ResourceNotFoundException("Invoice not found with id: " + id);
-        }
+        public Invoice getInvoiceById(UUID id) {
+            Invoice invoice = invoiceRepo.getById(id);
+            if (invoice == null) {
+                throw new ResourceNotFoundException("Invoice not found with id: " + id);
+            }
 
-        // Deduplicate billing records by ID
-        Map<UUID, BillingRecord> uniqueById = new LinkedHashMap<>();
-        for (BillingRecord record : invoice.getBillingRecords()) {
-            uniqueById.put(record.getId(), record);
-        }
+            // Deduplicate billing records by ID
+            Map<UUID, BillingRecord> uniqueById = new LinkedHashMap<>();
+            for (BillingRecord record : invoice.getBillingRecords()) {
+                uniqueById.put(record.getId(), record);
+            }
 
-        invoice.setBillingRecords(new ArrayList<>(uniqueById.values()));
-        return invoice;
-    }
+            invoice.setBillingRecords(new ArrayList<>(uniqueById.values()));
+            return invoice;
+        }
 
     public List<Invoice> getAllInvoices(String date) {
         Collection<Invoice> invoices = invoiceRepo.getAll();
